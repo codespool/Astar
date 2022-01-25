@@ -1265,6 +1265,50 @@ fn new_era_forcing() {
 }
 
 #[test]
+fn new_era_length_is_always_blocks_per_era() {
+    ExternalityBuilder::build().execute_with(|| {
+        initialize_first_block();
+        let blocks_per_era = mock::BLOCKS_PER_ERA;
+
+        // start new era era and record era number and height
+        advance_to_era(mock::DappsStaking::current_era() + 1);
+        let mut expected_era = mock::DappsStaking::current_era();
+        let mut previous_era_starting_block_height;
+        let mut current_era_starting_block_height = System::block_number();
+
+        // show normal era advancement works and its length is blocks_per_era
+        advance_to_era(mock::DappsStaking::current_era() + 1);
+        expected_era += 1;
+        previous_era_starting_block_height = current_era_starting_block_height;
+        current_era_starting_block_height = System::block_number();
+        assert_eq!(mock::DappsStaking::current_era(), expected_era);
+        assert_eq!(current_era_starting_block_height - previous_era_starting_block_height, blocks_per_era);
+
+
+        // now, move to middle of an era, force new era and assert the next block starts a new era
+        run_for_blocks(1);
+        <ForceEra<TestRuntime>>::put(Forcing::ForceNew);
+        run_for_blocks(1);  // era should increase here
+        expected_era += 1;
+        previous_era_starting_block_height = current_era_starting_block_height;
+        current_era_starting_block_height = System::block_number();
+        assert_eq!(mock::DappsStaking::current_era(), expected_era);
+
+        // show that the starting block of prev era and starting block of new era are less than blocks_per_era
+        assert!(current_era_starting_block_height - previous_era_starting_block_height < blocks_per_era);
+        assert!(current_era_starting_block_height - previous_era_starting_block_height > 0);
+        
+        // increment era and show the length of prev (forced) era is equal to blocks_per_era
+        advance_to_era(mock::DappsStaking::current_era() + 1);
+        expected_era += 1;
+        previous_era_starting_block_height = current_era_starting_block_height;
+        current_era_starting_block_height = System::block_number();
+        assert_eq!(mock::DappsStaking::current_era(), expected_era);
+        assert_eq!(current_era_starting_block_height - previous_era_starting_block_height, blocks_per_era);
+    })
+}
+
+#[test]
 fn claim_contract_not_registered() {
     ExternalityBuilder::build().execute_with(|| {
         initialize_first_block();
