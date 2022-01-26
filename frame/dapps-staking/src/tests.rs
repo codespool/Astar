@@ -1270,41 +1270,48 @@ fn new_era_length_is_always_blocks_per_era() {
         initialize_first_block();
         let blocks_per_era = mock::BLOCKS_PER_ERA;
 
-        // start new era era and record era number and height
+        // go to beginning of an era
         advance_to_era(mock::DappsStaking::current_era() + 1);
-        let mut expected_era = mock::DappsStaking::current_era();
-        let mut previous_era_starting_block_height;
-        let mut current_era_starting_block_height = System::block_number();
 
-        // show normal era advancement works and its length is blocks_per_era
+        // record era number and block number
+        let start_era = mock::DappsStaking::current_era();
+        let starting_block_number = System::block_number();
+
+        // go to next era
         advance_to_era(mock::DappsStaking::current_era() + 1);
-        expected_era += 1;
-        previous_era_starting_block_height = current_era_starting_block_height;
-        current_era_starting_block_height = System::block_number();
-        assert_eq!(mock::DappsStaking::current_era(), expected_era);
-        assert_eq!(current_era_starting_block_height - previous_era_starting_block_height, blocks_per_era);
+        let ending_block_number = System::block_number();
 
+        // make sure block number difference is is blocks_per_era
+        assert_eq!(mock::DappsStaking::current_era(), start_era + 1);
+        assert_eq!(ending_block_number - starting_block_number, blocks_per_era);
+    })
+}
 
-        // now, move to middle of an era, force new era and assert the next block starts a new era
-        run_for_blocks(1);
+#[test]
+fn new_forced_era_length_is_always_blocks_per_era() {
+    ExternalityBuilder::build().execute_with(|| {
+        initialize_first_block();
+        let blocks_per_era = mock::BLOCKS_PER_ERA;
+
+        // go to beginning of an era
+        advance_to_era(mock::DappsStaking::current_era() + 1);
+
+        // go to middle of era
+        run_for_blocks(1); // can be any number between 0 and blocks_per_era
+
+        // force new era
         <ForceEra<TestRuntime>>::put(Forcing::ForceNew);
-        run_for_blocks(1);  // era should increase here
-        expected_era += 1;
-        previous_era_starting_block_height = current_era_starting_block_height;
-        current_era_starting_block_height = System::block_number();
-        assert_eq!(mock::DappsStaking::current_era(), expected_era);
+        run_for_blocks(1); // calls on_initialize()
 
-        // show that the starting block of prev era and starting block of new era are less than blocks_per_era
-        assert!(current_era_starting_block_height - previous_era_starting_block_height < blocks_per_era);
-        assert!(current_era_starting_block_height - previous_era_starting_block_height > 0);
+        // note the start block number of new (forced) era
+        let start_block_number = System::block_number();
         
-        // increment era and show the length of prev (forced) era is equal to blocks_per_era
+        // go to start of next era
         advance_to_era(mock::DappsStaking::current_era() + 1);
-        expected_era += 1;
-        previous_era_starting_block_height = current_era_starting_block_height;
-        current_era_starting_block_height = System::block_number();
-        assert_eq!(mock::DappsStaking::current_era(), expected_era);
-        assert_eq!(current_era_starting_block_height - previous_era_starting_block_height, blocks_per_era);
+
+        // show the length of the forced era is equal to blocks_per_era
+        let end_block_number = System::block_number();
+        assert_eq!(end_block_number - start_block_number, blocks_per_era);
     })
 }
 
