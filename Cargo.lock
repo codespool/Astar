@@ -5556,7 +5556,6 @@ dependencies = [
 ]
 
 [[package]]
-<<<<<<< HEAD
 name = "pallet-dapps-staking"
 version = "2.0.0"
 dependencies = [
@@ -5579,8 +5578,6 @@ dependencies = [
 ]
 
 [[package]]
-=======
->>>>>>> 0abdd09d (read pallet-dapps-staking from folder)
 name = "pallet-democracy"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.13#afb74de23dfe2994e7ce38c0870efb9734e966f7"
@@ -5967,7 +5964,6 @@ name = "pallet-precompile-dapps-staking"
 version = "0.1.0"
 dependencies = [
  "derive_more",
-<<<<<<< HEAD
  "evm 0.30.1 (git+https://github.com/PlasmNetwork/evm?branch=polkadot-v0.9.12)",
  "fp-evm 3.0.0-dev (git+https://github.com/PlasmNetwork/frontier?branch=polkadot-v0.9.12)",
  "frame-support 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.12)",
@@ -5976,16 +5972,6 @@ dependencies = [
  "pallet-dapps-staking",
  "pallet-evm 6.0.0-dev (git+https://github.com/PlasmNetwork/frontier?branch=polkadot-v0.9.12)",
  "pallet-timestamp 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.12)",
-=======
- "evm",
- "fp-evm",
- "frame-support",
- "frame-system",
- "pallet-balances",
- "pallet-dapps-staking",
- "pallet-evm",
- "pallet-timestamp",
->>>>>>> 3184319e (unfinished merge fix)
  "parity-scale-codec",
  "scale-info",
  "serde",
@@ -9607,11 +9593,7 @@ dependencies = [
 
 [[package]]
 name = "shibuya-runtime"
-<<<<<<< HEAD
 version = "3.3.0"
-=======
-version = "3.2.2"
->>>>>>> 3184319e (unfinished merge fix)
 dependencies = [
  "cumulus-pallet-aura-ext",
  "cumulus-pallet-parachain-system",
@@ -9636,15 +9618,7 @@ dependencies = [
  "pallet-collator-selection",
  "pallet-collective",
  "pallet-custom-signatures",
-<<<<<<< HEAD
-<<<<<<< HEAD
  "pallet-dapps-staking",
-=======
- "pallet-dapps-staking 2.0.0 (git+https://github.com/AstarNetwork/Astar?rev=95f76bd62fab31073b4040d02cf2343de7222d99)",
->>>>>>> 3184319e (unfinished merge fix)
-=======
- "pallet-dapps-staking",
->>>>>>> 0abdd09d (read pallet-dapps-staking from folder)
  "pallet-ethereum",
  "pallet-evm 6.0.0-dev (git+https://github.com/PlasmNetwork/frontier?branch=polkadot-v0.9.13)",
  "pallet-evm-precompile-bn128",
@@ -9713,15 +9687,7 @@ dependencies = [
  "pallet-collator-selection",
  "pallet-collective",
  "pallet-custom-signatures",
-<<<<<<< HEAD
-<<<<<<< HEAD
  "pallet-dapps-staking",
-=======
- "pallet-dapps-staking 2.0.0",
->>>>>>> 3184319e (unfinished merge fix)
-=======
- "pallet-dapps-staking",
->>>>>>> 0abdd09d (read pallet-dapps-staking from folder)
  "pallet-ethereum",
  "pallet-evm 6.0.0-dev (git+https://github.com/PlasmNetwork/frontier?branch=polkadot-v0.9.13)",
  "pallet-evm-precompile-bn128",
