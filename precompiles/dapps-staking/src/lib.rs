@@ -33,10 +33,6 @@ where
         let current_era = pallet_dapps_staking::CurrentEra::<R>::get();
         let gas_used = R::GasWeightMapping::weight_to_gas(R::DbWeight::get().read);
 
-        println!(
-            "!!!!!!!!!!! read_current_era {:x?} ##########################",
-            current_era
-        );
         let output = utils::argument_from_u32(current_era);
 
         Ok(PrecompileOutput {
@@ -257,7 +253,6 @@ where
             [0x77, 0xa0, 0xfe, 0x02] => Self::withdraw_unbonded()?,
             [0xc1, 0x3f, 0x4a, 0xf7] => Self::claim(input)?,
             _ => {
-                sp_std::if_std! {println!("BAD selector {:x?}", selector);}
                 return Err(ExitError::Other("No method at given selector".into()));
             }
         };
